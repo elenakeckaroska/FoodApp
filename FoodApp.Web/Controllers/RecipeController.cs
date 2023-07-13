@@ -43,6 +43,7 @@ namespace FoodApp.Web.Controllers
                     OwnerOfRecipe = r.OwnerOfRecipe,
                     OwnerOfRecipeId = r.OwnerOfRecipeId,
                     FavoriteRecipes = r.FavoriteRecipes,
+                    Category = r.Category,
                     IsFavorite = favRecipeOnUsers.Contains(userId) ? true : false,
                 });
 
@@ -67,6 +68,7 @@ namespace FoodApp.Web.Controllers
                 {
                     Title = viewModel.RecipeTitle,
                     PreparationDescription = viewModel.PreparationDescription,
+                    Category = viewModel.SelectedCategory,
                     Ingridients = new List<Ingredient>(),
                     FavoriteRecipes = new List<FavoriteRecipeUser>()
                     
@@ -87,13 +89,16 @@ namespace FoodApp.Web.Controllers
                         _context.Ingridients.Add(ingredient);
                     }
                 }
+
+                _context.Recipes.Add(recipe);
+                _context.SaveChanges();
+
                 var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
                 var user = _context.Users.Where(u => u.Id == userId).FirstOrDefault();
-                user.AddedRecipes.Add(recipe);
+                //user.AddedRecipes.Add(recipe);
                 recipe.OwnerOfRecipeId = userId;
 
-                _context.Users.Update(user);
-                _context.Recipes.Add(recipe);
+                //_context.Users.Update(user);
                 _context.SaveChanges();
 
                 return RedirectToAction("Index", "Home"); // Redirect to a success page or other appropriate action
@@ -104,7 +109,7 @@ namespace FoodApp.Web.Controllers
         }
 
         // Edit: Recipe/Edit
-        public async Task<IActionResult> Edit(Guid id)
+        public IActionResult Edit(Guid id)
         {
             Recipe recipe = _context.Recipes.Where(r => r.Id == id)
                 .Include(r => r.Ingridients)
@@ -131,6 +136,7 @@ namespace FoodApp.Web.Controllers
                 RecipeId = id,
                 RecipeTitle = recipe.Title,
                 PreparationDescription = recipe.PreparationDescription,
+                SelectedCategory = recipe.Category,
                 Ingredients = ingredients
 
             };
@@ -150,7 +156,7 @@ namespace FoodApp.Web.Controllers
 
                 recipe.Title = viewModel.RecipeTitle;
                 recipe.PreparationDescription = viewModel.PreparationDescription;
-                
+                recipe.Category = viewModel.SelectedCategory;
 
                 if (viewModel.Ingredients != null)
                 {

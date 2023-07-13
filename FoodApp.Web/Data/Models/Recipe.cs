@@ -11,6 +11,8 @@ namespace FoodApp.Web.Data.Models
         public string Title { get; set; }
 
         public string PreparationDescription { get; set; }
+        public string Category { get; set; }
+
 
         public virtual ICollection<Ingredient> Ingridients { get; set; }
 
@@ -21,6 +23,7 @@ namespace FoodApp.Web.Data.Models
         public virtual ICollection<FavoriteRecipeUser> FavoriteRecipes { get; set; }
 
         public virtual CookingClasses CookingClass { get; set; }
+
         //public FoodAppUser FavUserRecipe { get; set; }
         //public Guid FavUserRecipeId { get; set; }
 

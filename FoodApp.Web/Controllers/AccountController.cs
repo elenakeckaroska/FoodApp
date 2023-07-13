@@ -1,5 +1,6 @@
 ﻿using FoodApp.Web.Data.Dtos;
 using FoodApp.Web.Data.Identity;
+using FoodApp.Web.Data.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -46,6 +47,7 @@ namespace FoodApp.Web.Controllers
                         EmailConfirmed = true,
                         PhoneNumberConfirmed = true,
                         PhoneNumber = request.PhoneNumber,
+                        AddedRecipes = new List<Recipe>(),
                         //UserCart = new ShoppingCart()
                     };
                     var result = await userManager.CreateAsync(user, request.Password);

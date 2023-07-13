@@ -19,6 +19,8 @@ namespace FoodApp.Web.Data.Dtos
 
         public string OwnerOfRecipeId { get; set; }
 
+        public string Category { get; set; }
+
         public virtual ICollection<FavoriteRecipeUser> FavoriteRecipes { get; set; }
 
         public Boolean IsFavorite { get; set; }
