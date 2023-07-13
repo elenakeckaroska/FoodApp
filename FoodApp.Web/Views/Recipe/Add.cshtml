@@ -1,0 +1,100 @@
+﻿@model FoodApp.Web.Data.ViewModel.RecipeViewModel
+
+@using (Html.BeginForm())
+{
+    <h2>Add Recipe</h2>
+
+    <div class="form-group">
+        @Html.LabelFor(m => m.RecipeTitle)
+        @Html.TextBoxFor(m => m.RecipeTitle, new { @class = "form-control" })
+        @Html.ValidationMessageFor(m => m.RecipeTitle)
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(m => m.PreparationDescription)
+        @Html.TextAreaFor(m => m.PreparationDescription, new { @class = "form-control" })
+        @Html.ValidationMessageFor(m => m.PreparationDescription)
+    </div>
+
+    <h3>Ingredients</h3>
+
+    <div id="ingredientsContainer">
+        @if (Model.Ingredients != null)
+        {
+            for (var i = 0; i < Model.Ingredients.Count; i++)
+            {
+                <div class="ingredient">
+                    <h4>Ingredient @(i + 1)</h4>
+                    <div class="form-group">
+                        @Html.LabelFor(m => m.Ingredients[i].Name)
+                        @Html.TextBoxFor(m => m.Ingredients[i].Name, new { @class = "form-control" })
+                        @Html.ValidationMessageFor(m => m.Ingredients[i].Name)
+                    </div>
+                    <div class="form-group">
+                        @Html.LabelFor(m => m.Ingredients[i].Quantity)
+                        @Html.TextBoxFor(m => m.Ingredients[i].Quantity, new { @class = "form-control" })
+                        @Html.ValidationMessageFor(m => m.Ingredients[i].Quantity)
+                    </div>
+                    <div class="form-group">
+                        @Html.LabelFor(m => m.Ingredients[i].SelectedUnit)
+                        @Html.DropDownListFor(m => m.Ingredients[i].SelectedUnit, new SelectList(Model.Ingredients[i].UnitOfMeasurement), new { @class = "form-control" })
+                        @Html.ValidationMessageFor(m => m.Ingredients[i].SelectedUnit)
+                    </div>
+                </div>
+            }
+        }
+    </div>
+
+    <button type="button" onclick="addIngredient()">Add Ingredient</button>
+
+    <br />
+    <br />
+
+    <input type="submit" value="Save" class="btn btn-primary" />
+}
+
+
+
+<script>
+    var index = @Model.Ingredients.Count;
+
+    function addIngredient() {
+        var container = document.getElementById("ingredientsContainer");
+
+        var ingredientDiv = document.createElement("div");
+        ingredientDiv.classList.add("ingredient");
+
+        var header = document.createElement("h4");
+        header.innerText = "Ingredient " + (index + 1);
+
+        var nameInput = document.createElement("input");
+        nameInput.name = "Ingredients[" + index + "].Name";
+        nameInput.classList.add("form-control");
+
+        var quantityInput = document.createElement("input");
+        quantityInput.name = "Ingredients[" + index + "].Quantity";
+        quantityInput.classList.add("form-control");
+
+        var unitOfMeasurementSelect = document.createElement("select");
+        unitOfMeasurementSelect.name = "Ingredients[" + index + "].SelectedUnit";
+        unitOfMeasurementSelect.classList.add("form-control");
+
+        // Populate the select options
+        var units = ["cup/s", "kg"];
+        for (var i = 0; i < units.length; i++) {
+            var option = document.createElement("option");
+            option.value = units[i];
+            option.text = units[i];
+            unitOfMeasurementSelect.appendChild(option);
+        }
+
+        ingredientDiv.appendChild(header);
+        ingredientDiv.appendChild(nameInput);
+        ingredientDiv.appendChild(quantityInput);
+        ingredientDiv.appendChild(unitOfMeasurementSelect);
+
+        container.appendChild(ingredientDiv);
+
+        index++;
+    }
+</script>

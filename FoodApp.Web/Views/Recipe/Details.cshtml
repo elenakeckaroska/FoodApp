@@ -1,0 +1,14 @@
+﻿@model FoodApp.Web.Data.Models.Recipe
+
+    <div class="container">
+
+        <p>@Model.Title</p>
+        <div>
+            @foreach (var i in Model.Ingridients)
+            {
+                <p>@i.Name</p>
+                <p>@i.Quantity</p>
+                <p>@i.UnitOfMeasurement</p>
+            }
+        </div>
+    </div>

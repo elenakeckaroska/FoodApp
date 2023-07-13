@@ -1,0 +1,31 @@
+﻿@model List<FoodApp.Web.Data.Dtos.RecipeDto>
+
+    <div class="container">
+    @foreach(var r in Model)
+    {
+        <p>@r.Title</p>
+        <div>
+            @foreach (var i in r.Ingridients)
+            {
+                <p>@i.Name</p>
+                <p>@i.Quantity</p>
+                <p>@i.UnitOfMeasurement</p>
+            }
+        </div>
+
+        <a asp-action="Edit" asp-route-id="@r.Id">Edit</a> <span class="text-muted">|</span>
+        <a asp-action="Delete" asp-route-id="@r.Id">Delete</a> <span class="text-muted">|</span>
+        <a asp-action="Details" asp-route-id="@r.Id">Details</a> <span class="text-muted">|</span>
+        @if (!r.IsFavorite)
+        {
+            <a asp-action="AddRecipeToFavorites" asp-route-recipeId="@r.Id">AddRecipeToFavorites</a> <span class="text-muted">|</span>
+
+        }
+        else
+        {
+            <a asp-action="RemoveRecipeToFavorites" asp-route-recipeId="@r.Id">RemoveRecipeToFavorites</a> <span class="text-muted">|</span>
+
+        }
+
+    }
+</div>
