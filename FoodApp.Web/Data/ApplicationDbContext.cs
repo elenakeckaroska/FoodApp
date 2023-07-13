@@ -54,11 +54,13 @@ namespace FoodApp.Web.Data
 
             //OneToOne
 
-            //builder.Entity<ShoppingCart>()
-            //    .HasOne<EBiletsUser>(z => z.Owner)
-            //    .WithOne(z => z.UserCart)
-            //    .HasForeignKey<ShoppingCart>(z => z.OwnerId);
+            builder.Entity<CookingClasses>()
+                .HasOne<Recipe>(z => z.Recipe)
+                .WithOne(z => z.CookingClass)
+                .HasForeignKey<CookingClasses>(z => z.RecipeId);
         }
+
+        public DbSet<FoodApp.Web.Data.Models.CookingClasses> CookingClasses { get; set; }
 
     }
 }

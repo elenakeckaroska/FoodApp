@@ -19,6 +19,8 @@ namespace FoodApp.Web.Data.Models
         public string OwnerOfRecipeId { get; set; }
 
         public virtual ICollection<FavoriteRecipeUser> FavoriteRecipes { get; set; }
+
+        public virtual CookingClasses CookingClass { get; set; }
         //public FoodAppUser FavUserRecipe { get; set; }
         //public Guid FavUserRecipeId { get; set; }
 

@@ -90,6 +90,29 @@ namespace FoodApp.Web.Data.Migrations
                     b.ToTable("AspNetUsers");
                 });
 
+            modelBuilder.Entity("FoodApp.Web.Data.Models.CookingClasses", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTime>("DateTime")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Link")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<Guid>("RecipeId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("RecipeId")
+                        .IsUnique();
+
+                    b.ToTable("CookingClasses");
+                });
+
             modelBuilder.Entity("FoodApp.Web.Data.Models.FavoriteRecipeUser", b =>
                 {
                     b.Property<Guid>("Id")
@@ -291,6 +314,15 @@ namespace FoodApp.Web.Data.Migrations
                     b.HasKey("UserId", "LoginProvider", "Name");
 
                     b.ToTable("AspNetUserTokens");
+                });
+
+            modelBuilder.Entity("FoodApp.Web.Data.Models.CookingClasses", b =>
+                {
+                    b.HasOne("FoodApp.Web.Data.Models.Recipe", "Recipe")
+                        .WithOne("CookingClass")
+                        .HasForeignKey("FoodApp.Web.Data.Models.CookingClasses", "RecipeId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("FoodApp.Web.Data.Models.FavoriteRecipeUser", b =>
