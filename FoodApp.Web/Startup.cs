@@ -1,5 +1,7 @@
-using FoodApp.Web.Data;
-using FoodApp.Web.Data.Identity;
+using FoodApp.Models.Identity;
+using FoodApp.Repository.Interface;
+using FoodApp.Service.Interface;
+using FoodApp.Models;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -9,10 +11,10 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+using FoodApp.Repository;
+using FoodApp.Web.Data;
+using FoodApp.Service.Implementation;
+using FoodApp.Repository.Implementation;
 
 namespace FoodApp.Web
 {
@@ -31,6 +33,18 @@ namespace FoodApp.Web
             services.AddDbContext<ApplicationDbContext>(options =>
                 options.UseSqlServer(
                     Configuration.GetConnectionString("DefaultConnection")));
+
+
+            services.AddScoped(typeof(IRecipeRepository), typeof(RecipeRepository));
+            services.AddScoped(typeof(IUserRepository), typeof(UserRepository));
+            services.AddScoped(typeof(IIngredientRepository), typeof(IngredientRepository));
+            services.AddScoped(typeof(IFavoriteRecipeUsersRepository), typeof(FavoriteRecipeUsersRepository));
+            services.AddScoped(typeof(ICookingClassesRepository), typeof(CookingClassesRepository));
+
+
+            services.AddTransient<IRecipeServive, RecipeService>();
+            services.AddTransient<ICookingClassesService, CookingClassesService>();
+
 
             //services.AddDefaultIdentity<EBiletsUser>(options => options.SignIn.RequireConfirmedAccount = true)
             //    .AddEntityFrameworkStores<ApplicationDbContext>();
@@ -70,7 +84,7 @@ namespace FoodApp.Web
             {
                 endpoints.MapControllerRoute(
                     name: "default",
-                    pattern: "{controller=Home}/{action=Index}/{id?}");
+                    pattern: "{controller=Recipe}/{action=Index}/{id?}");
                 endpoints.MapRazorPages();
             });
         }

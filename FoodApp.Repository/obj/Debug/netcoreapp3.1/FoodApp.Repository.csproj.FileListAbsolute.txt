@@ -1,0 +1,16 @@
+C:\Users\User\Desktop\FoodApp\FoodApp\FoodApp.Repository\obj\Debug\netcoreapp3.1\FoodApp.Repository.csproj.AssemblyReference.cache
+C:\Users\User\Desktop\FoodApp\FoodApp\FoodApp.Repository\obj\Debug\netcoreapp3.1\FoodApp.Repository.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\User\Desktop\FoodApp\FoodApp\FoodApp.Repository\obj\Debug\netcoreapp3.1\FoodApp.Repository.AssemblyInfoInputs.cache
+C:\Users\User\Desktop\FoodApp\FoodApp\FoodApp.Repository\obj\Debug\netcoreapp3.1\FoodApp.Repository.AssemblyInfo.cs
+C:\Users\User\Desktop\FoodApp\FoodApp\FoodApp.Repository\obj\Debug\netcoreapp3.1\FoodApp.Repository.csproj.CoreCompileInputs.cache
+C:\Users\User\Desktop\FoodApp\FoodApp\FoodApp.Repository\bin\Debug\netcoreapp3.1\FoodApp.Repository.deps.json
+C:\Users\User\Desktop\FoodApp\FoodApp\FoodApp.Repository\bin\Debug\netcoreapp3.1\FoodApp.Repository.runtimeconfig.json
+C:\Users\User\Desktop\FoodApp\FoodApp\FoodApp.Repository\bin\Debug\netcoreapp3.1\FoodApp.Repository.runtimeconfig.dev.json
+C:\Users\User\Desktop\FoodApp\FoodApp\FoodApp.Repository\bin\Debug\netcoreapp3.1\FoodApp.Repository.dll
+C:\Users\User\Desktop\FoodApp\FoodApp\FoodApp.Repository\bin\Debug\netcoreapp3.1\FoodApp.Repository.pdb
+C:\Users\User\Desktop\FoodApp\FoodApp\FoodApp.Repository\bin\Debug\netcoreapp3.1\FoodApp.Models.dll
+C:\Users\User\Desktop\FoodApp\FoodApp\FoodApp.Repository\bin\Debug\netcoreapp3.1\FoodApp.Models.pdb
+C:\Users\User\Desktop\FoodApp\FoodApp\FoodApp.Repository\obj\Debug\netcoreapp3.1\FoodApp.Repository.csproj.CopyComplete
+C:\Users\User\Desktop\FoodApp\FoodApp\FoodApp.Repository\obj\Debug\netcoreapp3.1\FoodApp.Repository.dll
+C:\Users\User\Desktop\FoodApp\FoodApp\FoodApp.Repository\obj\Debug\netcoreapp3.1\FoodApp.Repository.pdb
+C:\Users\User\Desktop\FoodApp\FoodApp\FoodApp.Repository\obj\Debug\netcoreapp3.1\FoodApp.Repository.genruntimeconfig.cache

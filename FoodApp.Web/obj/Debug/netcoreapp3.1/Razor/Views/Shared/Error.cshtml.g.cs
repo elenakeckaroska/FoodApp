@@ -21,13 +21,13 @@ using FoodApp.Web;
 #nullable disable
 #nullable restore
 #line 2 "C:\Users\User\Desktop\FoodApp\FoodApp\FoodApp.Web\Views\_ViewImports.cshtml"
-using FoodApp.Web.Models;
+using FoodApp.Models;
 
 #line default
 #line hidden
 #nullable disable
     [global::Microsoft.AspNetCore.Razor.Hosting.RazorSourceChecksumAttribute(@"SHA1", @"d6a5625cc8fb4476f348b0fe9041c550465d8bf9", @"/Views/Shared/Error.cshtml")]
-    [global::Microsoft.AspNetCore.Razor.Hosting.RazorSourceChecksumAttribute(@"SHA1", @"6b0d84977ff1449119ef01c53f5ecb25fc944d82", @"/Views/_ViewImports.cshtml")]
+    [global::Microsoft.AspNetCore.Razor.Hosting.RazorSourceChecksumAttribute(@"SHA1", @"a7fbdb5581177b505963f4bbc5344cfb1835561d", @"/Views/_ViewImports.cshtml")]
     #nullable restore
     public class Views_Shared_Error : global::Microsoft.AspNetCore.Mvc.Razor.RazorPage<ErrorViewModel>
     #nullable disable

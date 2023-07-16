@@ -179,3 +179,9 @@ C:\Users\User\Desktop\FoodApp\FoodApp\FoodApp.Web\obj\Debug\netcoreapp3.1\Razor\
 C:\Users\User\Desktop\FoodApp\FoodApp\FoodApp.Web\obj\Debug\netcoreapp3.1\Razor\Views\CookingClasses\Details.cshtml.g.cs
 C:\Users\User\Desktop\FoodApp\FoodApp\FoodApp.Web\obj\Debug\netcoreapp3.1\Razor\Views\CookingClasses\Edit.cshtml.g.cs
 C:\Users\User\Desktop\FoodApp\FoodApp\FoodApp.Web\obj\Debug\netcoreapp3.1\Razor\Views\CookingClasses\Index.cshtml.g.cs
+C:\Users\User\Desktop\FoodApp\FoodApp\FoodApp.Web\bin\Debug\netcoreapp3.1\FoodApp.Models.dll
+C:\Users\User\Desktop\FoodApp\FoodApp\FoodApp.Web\bin\Debug\netcoreapp3.1\FoodApp.Repository.dll
+C:\Users\User\Desktop\FoodApp\FoodApp\FoodApp.Web\bin\Debug\netcoreapp3.1\FoodApp.Service.dll
+C:\Users\User\Desktop\FoodApp\FoodApp\FoodApp.Web\bin\Debug\netcoreapp3.1\FoodApp.Models.pdb
+C:\Users\User\Desktop\FoodApp\FoodApp\FoodApp.Web\bin\Debug\netcoreapp3.1\FoodApp.Repository.pdb
+C:\Users\User\Desktop\FoodApp\FoodApp\FoodApp.Web\bin\Debug\netcoreapp3.1\FoodApp.Service.pdb

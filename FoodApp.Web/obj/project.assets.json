@@ -3068,6 +3068,49 @@
         "runtime": {
           "lib/netstandard1.3/System.Xml.XmlSerializer.dll": {}
         }
+      },
+      "FoodApp.Models/1.0.0": {
+        "type": "project",
+        "framework": ".NETCoreApp,Version=v3.1",
+        "dependencies": {
+          "Microsoft.AspNetCore.Identity.EntityFrameworkCore": "3.1.12"
+        },
+        "compile": {
+          "bin/placeholder/FoodApp.Models.dll": {}
+        },
+        "runtime": {
+          "bin/placeholder/FoodApp.Models.dll": {}
+        }
+      },
+      "FoodApp.Repository/1.0.0": {
+        "type": "project",
+        "framework": ".NETCoreApp,Version=v3.1",
+        "dependencies": {
+          "FoodApp.Models": "1.0.0",
+          "Microsoft.AspNetCore.Identity.EntityFrameworkCore": "3.1.12",
+          "Microsoft.EntityFrameworkCore": "3.1.12",
+          "Microsoft.EntityFrameworkCore.SqlServer": "3.1.12"
+        },
+        "compile": {
+          "bin/placeholder/FoodApp.Repository.dll": {}
+        },
+        "runtime": {
+          "bin/placeholder/FoodApp.Repository.dll": {}
+        }
+      },
+      "FoodApp.Service/1.0.0": {
+        "type": "project",
+        "framework": ".NETCoreApp,Version=v3.1",
+        "dependencies": {
+          "FoodApp.Models": "1.0.0",
+          "FoodApp.Repository": "1.0.0"
+        },
+        "compile": {
+          "bin/placeholder/FoodApp.Service.dll": {}
+        },
+        "runtime": {
+          "bin/placeholder/FoodApp.Service.dll": {}
+        }
       }
     }
   },
@@ -9185,10 +9228,28 @@
         "system.xml.xmlserializer.4.3.0.nupkg.sha512",
         "system.xml.xmlserializer.nuspec"
       ]
+    },
+    "FoodApp.Models/1.0.0": {
+      "type": "project",
+      "path": "../FoodApp.Models/FoodApp.Models.csproj",
+      "msbuildProject": "../FoodApp.Models/FoodApp.Models.csproj"
+    },
+    "FoodApp.Repository/1.0.0": {
+      "type": "project",
+      "path": "../FoodApp.Repository/FoodApp.Repository.csproj",
+      "msbuildProject": "../FoodApp.Repository/FoodApp.Repository.csproj"
+    },
+    "FoodApp.Service/1.0.0": {
+      "type": "project",
+      "path": "../FoodApp.Service/FoodApp.Service.csproj",
+      "msbuildProject": "../FoodApp.Service/FoodApp.Service.csproj"
     }
   },
   "projectFileDependencyGroups": {
     ".NETCoreApp,Version=v3.1": [
+      "FoodApp.Models >= 1.0.0",
+      "FoodApp.Repository >= 1.0.0",
+      "FoodApp.Service >= 1.0.0",
       "Microsoft.AspNetCore.Diagnostics.EntityFrameworkCore >= 3.1.32",
       "Microsoft.AspNetCore.Identity.EntityFrameworkCore >= 3.1.32",
       "Microsoft.AspNetCore.Identity.UI >= 3.1.32",
@@ -9223,7 +9284,17 @@
       "frameworks": {
         "netcoreapp3.1": {
           "targetAlias": "netcoreapp3.1",
-          "projectReferences": {}
+          "projectReferences": {
+            "C:\\Users\\User\\Desktop\\FoodApp\\FoodApp\\FoodApp.Models\\FoodApp.Models.csproj": {
+              "projectPath": "C:\\Users\\User\\Desktop\\FoodApp\\FoodApp\\FoodApp.Models\\FoodApp.Models.csproj"
+            },
+            "C:\\Users\\User\\Desktop\\FoodApp\\FoodApp\\FoodApp.Repository\\FoodApp.Repository.csproj": {
+              "projectPath": "C:\\Users\\User\\Desktop\\FoodApp\\FoodApp\\FoodApp.Repository\\FoodApp.Repository.csproj"
+            },
+            "C:\\Users\\User\\Desktop\\FoodApp\\FoodApp\\FoodApp.Service\\FoodApp.Service.csproj": {
+              "projectPath": "C:\\Users\\User\\Desktop\\FoodApp\\FoodApp\\FoodApp.Service\\FoodApp.Service.csproj"
+            }
+          }
         }
       },
       "warningProperties": {

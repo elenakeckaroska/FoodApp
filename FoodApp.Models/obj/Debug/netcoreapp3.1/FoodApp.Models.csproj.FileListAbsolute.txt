@@ -1,0 +1,10 @@
+C:\Users\User\Desktop\FoodApp\FoodApp\FoodApp.Models\obj\Debug\netcoreapp3.1\FoodApp.Models.csproj.AssemblyReference.cache
+C:\Users\User\Desktop\FoodApp\FoodApp\FoodApp.Models\obj\Debug\netcoreapp3.1\FoodApp.Models.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\User\Desktop\FoodApp\FoodApp\FoodApp.Models\obj\Debug\netcoreapp3.1\FoodApp.Models.AssemblyInfoInputs.cache
+C:\Users\User\Desktop\FoodApp\FoodApp\FoodApp.Models\obj\Debug\netcoreapp3.1\FoodApp.Models.AssemblyInfo.cs
+C:\Users\User\Desktop\FoodApp\FoodApp\FoodApp.Models\obj\Debug\netcoreapp3.1\FoodApp.Models.csproj.CoreCompileInputs.cache
+C:\Users\User\Desktop\FoodApp\FoodApp\FoodApp.Models\bin\Debug\netcoreapp3.1\FoodApp.Models.deps.json
+C:\Users\User\Desktop\FoodApp\FoodApp\FoodApp.Models\bin\Debug\netcoreapp3.1\FoodApp.Models.dll
+C:\Users\User\Desktop\FoodApp\FoodApp\FoodApp.Models\bin\Debug\netcoreapp3.1\FoodApp.Models.pdb
+C:\Users\User\Desktop\FoodApp\FoodApp\FoodApp.Models\obj\Debug\netcoreapp3.1\FoodApp.Models.dll
+C:\Users\User\Desktop\FoodApp\FoodApp\FoodApp.Models\obj\Debug\netcoreapp3.1\FoodApp.Models.pdb

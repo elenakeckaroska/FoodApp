@@ -1,6 +1,6 @@
-﻿using FoodApp.Web.Data.Dtos;
-using FoodApp.Web.Data.Identity;
-using FoodApp.Web.Data.Models;
+﻿using FoodApp.Models.Dtos;
+using FoodApp.Models.Identity;
+using FoodApp.Models.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -131,7 +131,7 @@ namespace FoodApp.Web.Controllers
 
         public IActionResult AddUserToRole()
         {
-            AddToRoleModel model = new AddToRoleModel();
+            FoodApp.Models.Identity.AddToRoleModel model = new AddToRoleModel();
             model.Roles = new List<string>() { "Admin", "User" };
             return View(model);
         }

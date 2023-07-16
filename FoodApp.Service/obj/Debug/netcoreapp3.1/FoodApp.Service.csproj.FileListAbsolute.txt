@@ -1,0 +1,15 @@
+C:\Users\User\Desktop\FoodApp\FoodApp\FoodApp.Service\obj\Debug\netcoreapp3.1\FoodApp.Service.csproj.AssemblyReference.cache
+C:\Users\User\Desktop\FoodApp\FoodApp\FoodApp.Service\obj\Debug\netcoreapp3.1\FoodApp.Service.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\User\Desktop\FoodApp\FoodApp\FoodApp.Service\obj\Debug\netcoreapp3.1\FoodApp.Service.AssemblyInfoInputs.cache
+C:\Users\User\Desktop\FoodApp\FoodApp\FoodApp.Service\obj\Debug\netcoreapp3.1\FoodApp.Service.AssemblyInfo.cs
+C:\Users\User\Desktop\FoodApp\FoodApp\FoodApp.Service\obj\Debug\netcoreapp3.1\FoodApp.Service.csproj.CoreCompileInputs.cache
+C:\Users\User\Desktop\FoodApp\FoodApp\FoodApp.Service\bin\Debug\netcoreapp3.1\FoodApp.Service.deps.json
+C:\Users\User\Desktop\FoodApp\FoodApp\FoodApp.Service\bin\Debug\netcoreapp3.1\FoodApp.Service.dll
+C:\Users\User\Desktop\FoodApp\FoodApp\FoodApp.Service\bin\Debug\netcoreapp3.1\FoodApp.Service.pdb
+C:\Users\User\Desktop\FoodApp\FoodApp\FoodApp.Service\bin\Debug\netcoreapp3.1\FoodApp.Models.dll
+C:\Users\User\Desktop\FoodApp\FoodApp\FoodApp.Service\bin\Debug\netcoreapp3.1\FoodApp.Repository.dll
+C:\Users\User\Desktop\FoodApp\FoodApp\FoodApp.Service\bin\Debug\netcoreapp3.1\FoodApp.Models.pdb
+C:\Users\User\Desktop\FoodApp\FoodApp\FoodApp.Service\bin\Debug\netcoreapp3.1\FoodApp.Repository.pdb
+C:\Users\User\Desktop\FoodApp\FoodApp\FoodApp.Service\obj\Debug\netcoreapp3.1\FoodApp.Service.csproj.CopyComplete
+C:\Users\User\Desktop\FoodApp\FoodApp\FoodApp.Service\obj\Debug\netcoreapp3.1\FoodApp.Service.dll
+C:\Users\User\Desktop\FoodApp\FoodApp\FoodApp.Service\obj\Debug\netcoreapp3.1\FoodApp.Service.pdb

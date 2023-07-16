@@ -14,4 +14,10 @@
     <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="3.1.5" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\FoodApp.Models\FoodApp.Models.csproj" />
+    <ProjectReference Include="..\FoodApp.Repository\FoodApp.Repository.csproj" />
+    <ProjectReference Include="..\FoodApp.Service\FoodApp.Service.csproj" />
+  </ItemGroup>
+
 </Project>

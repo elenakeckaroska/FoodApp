@@ -5,38 +5,43 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
+using FoodApp.Models;
+using FoodApp.Models.Models;
 using FoodApp.Web.Data;
-using FoodApp.Web.Data.Models;
+using FoodApp.Service.Interface;
+using FoodApp.Repository.Interface;
 
 namespace FoodApp.Web.Controllers
 {
     public class CookingClassesController : Controller
     {
-        private readonly ApplicationDbContext _context;
-
-        public CookingClassesController(ApplicationDbContext context)
+        private readonly ICookingClassesService cookingClassesService;
+        private readonly ICookingClassesRepository cookingClassesRepository;
+        private readonly IRecipeServive recipeService;
+        public CookingClassesController(ICookingClassesService cookingClassesService, IRecipeServive recipeService,
+            ICookingClassesRepository cookingClassesRepository)
         {
-            _context = context;
+            this.cookingClassesService = cookingClassesService;
+            this.cookingClassesRepository = cookingClassesRepository;
+            this.recipeService = recipeService;
         }
 
         // GET: CookingClasses
-        public async Task<IActionResult> Index()
+        public IActionResult Index()
         {
-            var applicationDbContext = _context.CookingClasses.Include(c => c.Recipe);
-            return View(await applicationDbContext.ToListAsync());
+            
+            return View(this.cookingClassesRepository.GetAll());
         }
 
         // GET: CookingClasses/Details/5
-        public async Task<IActionResult> Details(Guid? id)
+        public IActionResult Details(Guid id)
         {
             if (id == null)
             {
                 return NotFound();
             }
 
-            var cookingClasses = await _context.CookingClasses
-                .Include(c => c.Recipe)
-                .FirstOrDefaultAsync(m => m.Id == id);
+            var cookingClasses = cookingClassesService.GetById(id);
             if (cookingClasses == null)
             {
                 return NotFound();
@@ -48,9 +53,7 @@ namespace FoodApp.Web.Controllers
         // GET: CookingClasses/Create
         public IActionResult Create()
         {
-            List<Recipe> recipes = _context.Recipes
-          .Include(r => r.CookingClass)
-          .Where(r => r.CookingClass == null).ToList();
+            List<Recipe> recipes = recipeService.getAllRecipesWithNullCookingClass();
 
             ViewData["RecipeId"] = new SelectList(recipes, "Id", "Title");
             return View();
@@ -61,41 +64,33 @@ namespace FoodApp.Web.Controllers
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Link,DateTime,RecipeId")] CookingClasses cookingClasses)
+        public IActionResult Create([Bind("Id,Link,DateTime,RecipeId")] CookingClasses cookingClasses)
         {
-            if (ModelState.IsValid)
-            {
-                cookingClasses.Id = Guid.NewGuid();
-                _context.Add(cookingClasses);
-                await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
-            }
+            cookingClassesService.Create(cookingClasses);
 
-            List<Recipe> recipes = _context.Recipes
-                .Include(r=>r.CookingClass)
-                .Where(r => r.CookingClass == null).ToList();
+            //List<Recipe> recipes = _context.Recipes
+            //    .Include(r=>r.CookingClass)
+            //    .Where(r => r.CookingClass == null).ToList();
 
-            ViewData["RecipeId"] = new SelectList(recipes, "Id", "Title", cookingClasses.RecipeId);
-            return View(cookingClasses);
+            //ViewData["RecipeId"] = new SelectList(recipes, "Id", "Title", cookingClasses.RecipeId);
+            return RedirectToAction("Index");
         }
 
         // GET: CookingClasses/Edit/5
-        public async Task<IActionResult> Edit(Guid? id)
+        public  IActionResult Edit(Guid id)
         {
             if (id == null)
             {
                 return NotFound();
             }
 
-            var cookingClasses = await _context.CookingClasses.FindAsync(id);
+            var cookingClasses = cookingClassesService.GetById(id);
             if (cookingClasses == null)
             {
                 return NotFound();
             }
 
-            List<Recipe> recipes = _context.Recipes
-          .Include(r => r.CookingClass)
-          .Where(r => r.CookingClass == null).ToList();
+            List<Recipe> recipes = recipeService.getAllRecipesWithNullCookingClass();
 
             ViewData["RecipeId"] = new SelectList(recipes, "Id", "Title", cookingClasses.RecipeId);
             return View(cookingClasses);
@@ -117,8 +112,7 @@ namespace FoodApp.Web.Controllers
             {
                 try
                 {
-                    _context.Update(cookingClasses);
-                    await _context.SaveChangesAsync();
+                    cookingClassesRepository.Update(cookingClasses);
                 }
                 catch (DbUpdateConcurrencyException)
                 {
@@ -133,28 +127,22 @@ namespace FoodApp.Web.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            List<Recipe> recipes = _context.Recipes
-          .Include(r => r.CookingClass)
-          .Where(r => r.CookingClass == null).ToList();
+            List<Recipe> recipes = recipeService.getAllRecipesWithNullCookingClass();
             ViewData["RecipeId"] = new SelectList(recipes, "Id", "Title", cookingClasses.RecipeId);
             return View(cookingClasses);
         }
 
         // GET: CookingClasses/Delete/5
-        public async Task<IActionResult> Delete(Guid? id)
+        public IActionResult Delete(Guid id)
         {
             if (id == null)
             {
                 return NotFound();
             }
 
-            var cookingClasses = await _context.CookingClasses
-                .Include(c => c.Recipe)
-                .FirstOrDefaultAsync(m => m.Id == id);
-            if (cookingClasses == null)
-            {
-                return NotFound();
-            }
+            cookingClassesRepository.Delete(id);
+
+            CookingClasses cookingClasses = cookingClassesRepository.GetById(id);
 
             return View(cookingClasses);
         }
@@ -162,17 +150,16 @@ namespace FoodApp.Web.Controllers
         // POST: CookingClasses/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(Guid id)
+        public IActionResult DeleteConfirmed(Guid id)
         {
-            var cookingClasses = await _context.CookingClasses.FindAsync(id);
-            _context.CookingClasses.Remove(cookingClasses);
-            await _context.SaveChangesAsync();
+            cookingClassesRepository.Delete(id);
             return RedirectToAction(nameof(Index));
         }
 
         private bool CookingClassesExists(Guid id)
         {
-            return _context.CookingClasses.Any(e => e.Id == id);
+            return cookingClassesRepository.GetById(id) != null;
+
         }
     }
 }

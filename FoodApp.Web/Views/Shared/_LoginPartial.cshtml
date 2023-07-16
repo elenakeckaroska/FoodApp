@@ -1,6 +1,6 @@
 ﻿@using Microsoft.AspNetCore.Identity
-@inject SignInManager<FoodApp.Web.Data.Identity.FoodAppUser> SignInManager
-@inject UserManager<FoodApp.Web.Data.Identity.FoodAppUser> UserManager
+@inject SignInManager<FoodApp.Models.Identity.FoodAppUser> SignInManager
+@inject UserManager<FoodApp.Models.Identity.FoodAppUser> UserManager
 
 <ul class="navbar-nav">
 @if (SignInManager.IsSignedIn(User))
