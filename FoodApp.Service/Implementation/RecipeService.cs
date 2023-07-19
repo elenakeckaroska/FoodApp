@@ -1,6 +1,7 @@
 ﻿using FoodApp.Models;
 using FoodApp.Models.Dtos;
 using FoodApp.Models.Models;
+using FoodApp.Models.ViewModels;
 using FoodApp.Repository.Implementation;
 using FoodApp.Repository.Interface;
 using FoodApp.Service.Interface;
@@ -18,18 +19,27 @@ namespace FoodApp.Service.Implementation
         private readonly IRecipeRepository recipeRepository;
         private readonly IIngredientRepository ingredientRepository;
         private readonly IUserRepository userRepository;
+        private readonly ICookingClassesRepository cookingClassesRepository;
+        private readonly IRepository<CookingClassesInShoppingCart> cookingClassesInShoppingCart;
+
 
         private readonly IFavoriteRecipeUsersRepository favoriteRecipeUsersRepository;
+        private readonly ICookingClassesUserRepository cookingClassesUserRepository;
         public RecipeService(IRecipeRepository recipeRepository, 
             IFavoriteRecipeUsersRepository favoriteRecipeUsersRepository, 
             IIngredientRepository ingredientRepository,
-            IUserRepository userRepository)
+            IUserRepository userRepository,
+            ICookingClassesUserRepository cookingClassesUserRepository,
+            ICookingClassesRepository cookingClassesRepository,
+            IRepository<CookingClassesInShoppingCart> cookingClassesInShoppingCart)
         {
             this.recipeRepository = recipeRepository;
             this.favoriteRecipeUsersRepository = favoriteRecipeUsersRepository;
             this.ingredientRepository = ingredientRepository;
             this.userRepository = userRepository;
-
+            this.cookingClassesUserRepository = cookingClassesUserRepository;
+            this.cookingClassesRepository = cookingClassesRepository;
+            this.cookingClassesRepository = cookingClassesRepository;
         }
 
         public bool Add(RecipeViewModel model, string userId)
@@ -91,6 +101,8 @@ namespace FoodApp.Service.Implementation
 
             favoriteRecipeUsersRepository.Add(item);
         }
+
+        
 
         public void Delete(Guid id)
         {
@@ -209,6 +221,51 @@ namespace FoodApp.Service.Implementation
             FavoriteRecipeUser favoriteRecipeUser = favoriteRecipeUsersRepository.GetByIdAndUser(recipeId, userId);
 
             favoriteRecipeUsersRepository.Delete(favoriteRecipeUser);
+        }
+
+        public bool AddToShoppingCart(AddToShoppingCartDto item, string userID)
+        {
+            var user = this.userRepository.Get(userID);
+
+            var userShoppingCard = user.UserCart;
+
+            if (item.SelectedClassId != null && userShoppingCard != null)
+            {
+                var cookingClass = cookingClassesRepository.GetById(item.SelectedClassId);
+                //{896c1325-a1bb-4595-92d8-08da077402fc}
+
+                if (cookingClass != null)
+                {
+                    CookingClassesInShoppingCart itemToAdd = new CookingClassesInShoppingCart
+                    {
+                        Id = Guid.NewGuid(),
+                        CookingClasses = cookingClass,
+                        CookingClassId = item.SelectedClassId,
+                        ShoppingCart = userShoppingCard,
+                        ShoppingCartId = userShoppingCard.Id,
+                    };
+
+                    var existing = userShoppingCard.CookingClassesInShoppingCart
+                        .Where(z => z.ShoppingCartId == userShoppingCard.Id && z.CookingClassId == itemToAdd.CookingClassId).FirstOrDefault();
+
+                    if (existing != null)
+                    {
+                        //existing.Quantity += itemToAdd.Quantity;
+                        //this._productInShoppingCartRepository.Update(existing);
+
+                    }
+                    else
+                    {
+                        this.cookingClassesInShoppingCart.Insert(itemToAdd);
+                    }
+
+
+
+                    return true;
+                }
+                return false;
+            }
+            return false;
         }
     }
 }

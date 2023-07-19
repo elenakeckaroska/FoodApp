@@ -12,7 +12,6 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using FoodApp.Repository;
-using FoodApp.Web.Data;
 using FoodApp.Service.Implementation;
 using FoodApp.Repository.Implementation;
 
@@ -40,10 +39,14 @@ namespace FoodApp.Web
             services.AddScoped(typeof(IIngredientRepository), typeof(IngredientRepository));
             services.AddScoped(typeof(IFavoriteRecipeUsersRepository), typeof(FavoriteRecipeUsersRepository));
             services.AddScoped(typeof(ICookingClassesRepository), typeof(CookingClassesRepository));
+            services.AddScoped(typeof(ICookingClassesUserRepository), typeof(CookingClassesUserRepository));
+            services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
+
 
 
             services.AddTransient<IRecipeServive, RecipeService>();
             services.AddTransient<ICookingClassesService, CookingClassesService>();
+            services.AddTransient<IShoppingCartService, ShoppingCartService>();
 
 
             //services.AddDefaultIdentity<EBiletsUser>(options => options.SignIn.RequireConfirmedAccount = true)

@@ -185,3 +185,11 @@ C:\Users\User\Desktop\FoodApp\FoodApp\FoodApp.Web\bin\Debug\netcoreapp3.1\FoodAp
 C:\Users\User\Desktop\FoodApp\FoodApp\FoodApp.Web\bin\Debug\netcoreapp3.1\FoodApp.Models.pdb
 C:\Users\User\Desktop\FoodApp\FoodApp\FoodApp.Web\bin\Debug\netcoreapp3.1\FoodApp.Repository.pdb
 C:\Users\User\Desktop\FoodApp\FoodApp\FoodApp.Web\bin\Debug\netcoreapp3.1\FoodApp.Service.pdb
+C:\Users\User\Desktop\FoodApp\FoodApp\FoodApp.Web\bin\Debug\netcoreapp3.1\EntityFramework.SqlServer.dll
+C:\Users\User\Desktop\FoodApp\FoodApp\FoodApp.Web\bin\Debug\netcoreapp3.1\EntityFramework.dll
+C:\Users\User\Desktop\FoodApp\FoodApp\FoodApp.Web\bin\Debug\netcoreapp3.1\System.CodeDom.dll
+C:\Users\User\Desktop\FoodApp\FoodApp\FoodApp.Web\bin\Debug\netcoreapp3.1\System.Data.SqlClient.dll
+C:\Users\User\Desktop\FoodApp\FoodApp\FoodApp.Web\bin\Debug\netcoreapp3.1\runtimes\unix\lib\netcoreapp2.1\System.Data.SqlClient.dll
+C:\Users\User\Desktop\FoodApp\FoodApp\FoodApp.Web\bin\Debug\netcoreapp3.1\runtimes\win\lib\netcoreapp2.1\System.Data.SqlClient.dll
+C:\Users\User\Desktop\FoodApp\FoodApp\FoodApp.Web\obj\Debug\netcoreapp3.1\Razor\Views\ShoppingCart\Index.cshtml.g.cs
+C:\Users\User\Desktop\FoodApp\FoodApp\FoodApp.Web\obj\Debug\netcoreapp3.1\Razor\Views\CookingClasses\AddCookingClassToCart.cshtml.g.cs

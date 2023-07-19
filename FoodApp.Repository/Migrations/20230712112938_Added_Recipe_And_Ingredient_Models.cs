@@ -1,7 +1,7 @@
 ﻿using System;
 using Microsoft.EntityFrameworkCore.Migrations;
 
-namespace FoodApp.Models.Migrations
+namespace FoodApp.Repository.Migrations
 {
     public partial class Added_Recipe_And_Ingredient_Models : Migration
     {

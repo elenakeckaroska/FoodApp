@@ -14,5 +14,9 @@ namespace FoodApp.Repository.Interface
 
         void Update(CookingClasses cookingClass);
         void Delete(Guid id);
+
+    
+
+
     }
 }

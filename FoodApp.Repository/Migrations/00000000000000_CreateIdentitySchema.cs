@@ -2,7 +2,7 @@
 using Microsoft.EntityFrameworkCore.Migrations;
 using System;
 
-namespace FoodApp.Models.Migrations
+namespace FoodApp.Repository.Migrations
 {
     public partial class CreateIdentitySchema : Migration
     {

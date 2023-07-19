@@ -48,7 +48,7 @@ namespace FoodApp.Web.Controllers
                         PhoneNumberConfirmed = true,
                         PhoneNumber = request.PhoneNumber,
                         AddedRecipes = new List<Recipe>(),
-                        //UserCart = new ShoppingCart()
+                        UserCart = new ShoppingCart()
                     };
                     var result = await userManager.CreateAsync(user, request.Password);
                     if (result.Succeeded)

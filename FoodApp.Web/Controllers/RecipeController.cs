@@ -1,5 +1,7 @@
 ﻿using FoodApp.Models;
+using FoodApp.Models.Dtos;
 using FoodApp.Models.Models;
+using FoodApp.Models.ViewModels;
 using FoodApp.Repository.Interface;
 using FoodApp.Service.Interface;
 using Microsoft.AspNetCore.Mvc;
@@ -103,6 +105,23 @@ namespace FoodApp.Web.Controllers
             return RedirectToAction("Index");
 
        }
+
+        //[HttpPost]
+        //[ValidateAntiForgeryToken]
+        //public IActionResult AddBilletToCart(AddToShoppingCartDto model)
+        //{
+        //    var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+        //    //var userShoppingCard = await _context.ShoppingCarts.Where(z => z.OwnerId.Equals(userId)).FirstOrDefaultAsync();
+        //    var result = this.recipeService.AddToShoppingCart(model, userId);
+
+        //    if (result)
+        //    {
+        //        return RedirectToAction("Index", "ShoppingCart");
+        //    }
+        //    return View(model);
+
+
+        //}
 
     }
 }

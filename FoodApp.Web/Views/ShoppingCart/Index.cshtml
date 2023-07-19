@@ -1,0 +1,60 @@
+﻿@model FoodApp.Models.Dtos.ShoppingCartDto
+
+<div class="container">
+
+    <div class="container text-center">
+        <h2>Your Shopping Cart</h2>
+    </div>
+    <div class="row m-5">
+        <table class="table">
+            <thead class="table table-striped table-dark">
+                <tr>
+                    <th scope="col"> </th>
+                    <th scope="col">Movie Title</th>
+                    <th scope="col">Ticket Price</th>
+                    <th scope="col">Total</th>
+                    <th scope="col"> </th>
+                </tr>
+            </thead>
+            <tbody>
+                @for (int i = 0; i < Model.CookingClassesInShoppingCart.Count; i++)
+                {
+                    var item = Model.CookingClassesInShoppingCart.ToArray()[i];
+
+                    <tr>
+                        <th scope="row">@(i + 1)</th>
+                        <td>@item.CookingClasses.Link</td>
+                        <td>@item.CookingClasses.Price</td>
+                        <td>@(item.CookingClasses.Price)</td>
+                        <td>
+@*                            <a asp-controller="ShoppingCart" asp-action="DeleteFromShoppingCart" asp-route-billetId="@item.CurrentBillet.Id" class="btn btn-outline-danger">Delete</a>
+*@                        </td>
+                    </tr>
+                }
+            </tbody>
+            <tfoot>
+                <tr>
+                    <th scope="col">Total Price:</th>
+                    <th scope="col"></th>
+                    <th scope="col"></th>
+                    <th scope="col"></th>
+                    <th scope="col"></th>
+                    <th scope="col">@Model.TotalPrice $</th>
+                </tr>
+            </tfoot>
+        </table>
+        @if(Model.TotalPrice > 0)
+        {
+            <div class="row m-auto">
+                <a asp-controller="ShoppingCart" asp-action="OrderNow" class="btn btn-success">Pay now</a>
+            </div>
+        }
+        else
+        {
+            <div class="row m-auto">
+                <a asp-controller="ShoppingCart" asp-action="OrderNow" class="btn btn-success disabled">Pay now</a>
+            </div>
+        }
+
+    </div>
+</div>

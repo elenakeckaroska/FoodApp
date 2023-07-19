@@ -1,7 +1,6 @@
 ﻿using FoodApp.Models;
 using FoodApp.Models.Identity;
 using FoodApp.Repository.Interface;
-using FoodApp.Web.Data;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -29,7 +28,9 @@ namespace FoodApp.Repository.Implementation
         {
            return entities
                 .Where(u => u.Id == id)
-                //.Include(z => z.UserCart)
+                .Include(z => z.UserCart)
+                .Include(z => z.UserCart.CookingClassesInShoppingCart)
+                .Include("UserCart.CookingClassesInShoppingCart.CookingClasses")
                 .Include(z => z.FavoriteRecipes)
                 .Include(z => z.AddedRecipes)
                 .First();

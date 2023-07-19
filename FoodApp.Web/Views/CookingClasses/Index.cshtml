@@ -1,4 +1,4 @@
-﻿@model IEnumerable<FoodApp.Models.Models.CookingClasses>
+﻿@model IEnumerable<FoodApp.Models.Dtos.CookingClassesDto>
 
 @{
     ViewData["Title"] = "Index";
@@ -22,6 +22,8 @@
                 @Html.DisplayNameFor(model => model.Recipe)
             </th>
             <th></th>
+            <th></th>
+
         </tr>
     </thead>
     <tbody>
@@ -40,6 +42,27 @@
                 <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
                 <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
                 <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+
+            </td>
+            <td>
+
+                  
+
+                    @if (!item.isUserSubscribed)
+                    {
+                        <a asp-action="UserScheduleCookingClass" asp-route-cookingClassesID="@item.Id">Subscribe</a>
+
+                    }
+                    else
+                    {
+                        <a asp-action="RemoveUserFromCookingClasses" asp-route-cookingClassesID="@item.Id">Remove User From Cooking Class</a>
+
+                    }
+
+                    <form asp-action="AddCookingClassToCart" method="post">
+                        <input type="hidden" name="classId" value="@item.Id"/>
+                        <button type="submit" class="btn btn-outline-primary mr-4">Add to cart</button>
+                    </form>
             </td>
         </tr>
 }

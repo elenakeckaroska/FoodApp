@@ -12,8 +12,10 @@ namespace FoodApp.Models.Identity
         public virtual ICollection<Recipe> AddedRecipes { get; set; }
 
         public virtual ICollection<FavoriteRecipeUser> FavoriteRecipes { get; set; }
+        public virtual ICollection<CookingClassesUser> CookingClassesUser { get; set; }
 
-        //public virtual ShoppingCart UserCart { get; set; }
+
+        public virtual ShoppingCart UserCart { get; set; }
         //public virtual ICollection<Order> Orders { get; set; }
     }
 }

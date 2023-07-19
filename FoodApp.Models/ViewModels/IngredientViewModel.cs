@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace FoodApp.Models
+namespace FoodApp.Models.ViewModels
 {
     public class IngredientViewModel
     {
