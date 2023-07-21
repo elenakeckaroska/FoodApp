@@ -9,6 +9,6 @@ namespace FoodApp.Service.Interface
     {
         ShoppingCartDto getShoppingCartInfo(string userId);
         bool deleteProductFromSoppingCart(string userId, Guid classId);
-        //bool order(string userId);
+        bool order(string userId);
     }
 }

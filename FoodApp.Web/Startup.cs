@@ -14,16 +14,22 @@ using Microsoft.Extensions.Hosting;
 using FoodApp.Repository;
 using FoodApp.Service.Implementation;
 using FoodApp.Repository.Implementation;
+using FoodApp.Models.Models;
+using Stripe;
+using FoodApp.Service.Events;
 
 namespace FoodApp.Web
 {
     public class Startup
     {
+        private EmailSettings emailSettings;
         public Startup(IConfiguration configuration)
         {
+            emailSettings = new EmailSettings();
             Configuration = configuration;
-        }
+            Configuration.GetSection("EmailSettings").Bind(emailSettings);
 
+        }
         public IConfiguration Configuration { get; }
 
         // This method gets called by the runtime. Use this method to add services to the container.
@@ -41,14 +47,21 @@ namespace FoodApp.Web
             services.AddScoped(typeof(ICookingClassesRepository), typeof(CookingClassesRepository));
             services.AddScoped(typeof(ICookingClassesUserRepository), typeof(CookingClassesUserRepository));
             services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
+            services.AddScoped(typeof(IOrderRepository), typeof(OrderRepository));
 
 
+            services.AddScoped<EmailSettings>(es => emailSettings);
+            services.AddScoped<IEmailService, EmailService>(email => new EmailService(emailSettings));
+            services.AddScoped<IBackgroundEmailSender, BackgroundEmailSender>();
+
+            services.AddScoped<OrderCompletionNotifier>();
 
             services.AddTransient<IRecipeServive, RecipeService>();
             services.AddTransient<ICookingClassesService, CookingClassesService>();
             services.AddTransient<IShoppingCartService, ShoppingCartService>();
+            services.AddTransient<IOrderService, OrderService>();
 
-
+            services.Configure<StripeSettings>(Configuration.GetSection("Stripe"));
             //services.AddDefaultIdentity<EBiletsUser>(options => options.SignIn.RequireConfirmedAccount = true)
             //    .AddEntityFrameworkStores<ApplicationDbContext>();
 
@@ -64,6 +77,8 @@ namespace FoodApp.Web
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
+            StripeConfiguration.SetApiKey(Configuration.GetSection("Stripe")["SecretKey"]);
+
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();

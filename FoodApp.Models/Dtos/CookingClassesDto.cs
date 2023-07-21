@@ -22,5 +22,9 @@ namespace FoodApp.Models.Dtos
         public virtual ICollection<CookingClassesUser> CookingClassesUser { get; set; }
 
         public bool isUserSubscribed { get; set; }
+
+        public bool hasPaid { get; set; }
+
+
     }
 }

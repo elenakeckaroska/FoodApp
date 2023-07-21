@@ -18,6 +18,7 @@ namespace FoodApp.Models.Models
 
         public virtual ICollection<CookingClassesUser> CookingClassesUser { get; set; }
 
-        
+        public virtual ICollection<CookingClassInOrder> Orders { get; set; }
+
     }
 }

@@ -90,6 +90,27 @@ namespace FoodApp.Repository.Migrations
                     b.ToTable("AspNetUsers");
                 });
 
+            modelBuilder.Entity("FoodApp.Models.Models.CookingClassInOrder", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("ClassId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("OrderId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ClassId");
+
+                    b.HasIndex("OrderId");
+
+                    b.ToTable("CookingClassInOrder");
+                });
+
             modelBuilder.Entity("FoodApp.Models.Models.CookingClasses", b =>
                 {
                     b.Property<Guid>("Id")
@@ -158,6 +179,29 @@ namespace FoodApp.Repository.Migrations
                     b.ToTable("CookingClassesUser");
                 });
 
+            modelBuilder.Entity("FoodApp.Models.Models.EmailMessage", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("Content")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("MailTo")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("Status")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("Subject")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("EmailMessages");
+                });
+
             modelBuilder.Entity("FoodApp.Models.Models.FavoriteRecipeUser", b =>
                 {
                     b.Property<Guid>("Id")
@@ -202,6 +246,22 @@ namespace FoodApp.Repository.Migrations
                     b.HasIndex("RecipeId");
 
                     b.ToTable("Ingridients");
+                });
+
+            modelBuilder.Entity("FoodApp.Models.Models.Order", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("UserId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("Orders");
                 });
 
             modelBuilder.Entity("FoodApp.Models.Models.Recipe", b =>
@@ -382,6 +442,21 @@ namespace FoodApp.Repository.Migrations
                     b.ToTable("AspNetUserTokens");
                 });
 
+            modelBuilder.Entity("FoodApp.Models.Models.CookingClassInOrder", b =>
+                {
+                    b.HasOne("FoodApp.Models.Models.CookingClasses", "SelectedClass")
+                        .WithMany("Orders")
+                        .HasForeignKey("ClassId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("FoodApp.Models.Models.Order", "UserOrder")
+                        .WithMany("ClassesInOrder")
+                        .HasForeignKey("OrderId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
             modelBuilder.Entity("FoodApp.Models.Models.CookingClasses", b =>
                 {
                     b.HasOne("FoodApp.Models.Models.Recipe", "Recipe")
@@ -439,6 +514,13 @@ namespace FoodApp.Repository.Migrations
                         .HasForeignKey("RecipeId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+                });
+
+            modelBuilder.Entity("FoodApp.Models.Models.Order", b =>
+                {
+                    b.HasOne("FoodApp.Models.Identity.FoodAppUser", "User")
+                        .WithMany("Orders")
+                        .HasForeignKey("UserId");
                 });
 
             modelBuilder.Entity("FoodApp.Models.Models.Recipe", b =>

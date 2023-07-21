@@ -53,16 +53,20 @@
                         <a asp-action="UserScheduleCookingClass" asp-route-cookingClassesID="@item.Id">Subscribe</a>
 
                     }
+                    else if (item.hasPaid)
+                    {
+                        <span>Paid</span>
+                    }
                     else
                     {
                         <a asp-action="RemoveUserFromCookingClasses" asp-route-cookingClassesID="@item.Id">Remove User From Cooking Class</a>
 
                     }
 
-                    <form asp-action="AddCookingClassToCart" method="post">
+                   @* <form asp-action="AddCookingClassToCart" method="post">
                         <input type="hidden" name="classId" value="@item.Id"/>
                         <button type="submit" class="btn btn-outline-primary mr-4">Add to cart</button>
-                    </form>
+                    </form>*@
             </td>
         </tr>
 }

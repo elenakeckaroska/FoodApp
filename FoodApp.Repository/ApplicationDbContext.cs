@@ -11,6 +11,8 @@ namespace FoodApp.Repository
         public virtual DbSet<Ingredient> Ingridients { get; set; }
         public virtual DbSet<Recipe> Recipes { get; set; }
         public virtual DbSet<FavoriteRecipeUser> FavoriteRecipeUsers { get; set; }
+        public virtual DbSet<Order> Orders { get; set; }
+        public virtual DbSet<EmailMessage> EmailMessages { get; set; }
 
         public virtual DbSet<CookingClassesUser> CookingClassesUser { get; set; }
 
@@ -73,9 +75,21 @@ namespace FoodApp.Repository
                 .HasForeignKey(z => z.CookingClassId);
 
             builder.Entity<CookingClassesInShoppingCart>()
-               .HasOne(z => z.ShoppingCart) // shto ima vo pogorniot entitet
-               .WithMany(z => z.CookingClassesInShoppingCart) //vo kakva vrska e soodvetnoto svojstvo od negoviot model
-               .HasForeignKey(z => z.ShoppingCartId); //shto e nadvoreshniot kluch vo entitetot
+               .HasOne(z => z.ShoppingCart) 
+               .WithMany(z => z.CookingClassesInShoppingCart) 
+               .HasForeignKey(z => z.ShoppingCartId); 
+
+
+            builder.Entity<CookingClassInOrder>()
+                .HasOne(z => z.SelectedClass)
+                .WithMany(t => t.Orders)
+                .HasForeignKey(z => z.ClassId);
+
+            builder.Entity<CookingClassInOrder>()
+                .HasOne(z => z.UserOrder)
+                .WithMany(t => t.ClassesInOrder)
+                .HasForeignKey(z => z.OrderId);
+
         }
 
         public DbSet<CookingClasses> CookingClasses { get; set; }

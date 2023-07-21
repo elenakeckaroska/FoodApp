@@ -11,8 +11,7 @@ using FoodApp.Service.Interface;
 using FoodApp.Repository.Interface;
 using System.Security.Claims;
 using FoodApp.Models.Dtos;
-using Microsoft.VisualBasic;
-using FoodApp.Repository.Implementation;
+
 
 namespace FoodApp.Web.Controllers
 {
@@ -22,14 +21,19 @@ namespace FoodApp.Web.Controllers
         private readonly ICookingClassesRepository cookingClassesRepository;
         private readonly ICookingClassesUserRepository cookingClassesUserRepository;
         private readonly IRecipeServive recipeService;
+        private readonly IShoppingCartService shoppingCartService;
+        private readonly IOrderService orderService;
 
         public CookingClassesController(ICookingClassesService cookingClassesService, IRecipeServive recipeService,
-            ICookingClassesRepository cookingClassesRepository, ICookingClassesUserRepository cookingClassesUserRepository)
+            ICookingClassesRepository cookingClassesRepository, ICookingClassesUserRepository cookingClassesUserRepository,
+            IShoppingCartService shoppingCartService, IOrderService orderService)
         {
             this.cookingClassesService = cookingClassesService;
             this.cookingClassesRepository = cookingClassesRepository;
             this.recipeService = recipeService;
             this.cookingClassesUserRepository = cookingClassesUserRepository;
+            this.shoppingCartService = shoppingCartService;
+            this.orderService = orderService;
         }
 
         // GET: CookingClasses
@@ -45,6 +49,21 @@ namespace FoodApp.Web.Controllers
                 List<string> cook = cookingClassesUserRepository.GetFavoriteRecipeUsers()
                   .Where(f => f.CookingClassesID == item.Id)
                   .Select(f => f.UserId).ToList();
+
+                List<Order> ordersByUser = orderService.getAllOrders()
+                    .Where(o => o.UserId == userId)
+                    .ToList();
+
+                bool paid = false;
+                foreach (var order in ordersByUser)
+                {
+                    if (order.ClassesInOrder.Select(f => f.ClassId)
+                        .Contains(item.Id))
+                    {
+                        paid = true;
+                    }
+                }
+
                 cookingClassesDtos.Add(
                     new CookingClassesDto
                     {
@@ -57,6 +76,7 @@ namespace FoodApp.Web.Controllers
                         CookingClassesUser = item.CookingClassesUser,
                         isUserSubscribed = cook.Contains(userId) ? true : false,
                         Price = item.Price,
+                        hasPaid = paid
                     });
             }
             return View(cookingClassesDtos);
@@ -196,6 +216,21 @@ namespace FoodApp.Web.Controllers
             var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
             cookingClassesService.UserScheduleCookingClass(cookingClassesID, userId);
             ViewData["subscribed"] = true;
+            //return RedirectToAction("Index");
+            AddToShoppingCartDto model = new AddToShoppingCartDto
+            {
+                SelectedClassId = cookingClassesID,
+                SelectedClass = cookingClassesService.GetById(cookingClassesID)
+            };
+
+            //var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+
+            var result = this.cookingClassesService.AddToShoppingCart(model, userId);
+
+            if (result)
+            {
+                return RedirectToAction("Index", "ShoppingCart");
+            }
             return RedirectToAction("Index");
         }
 
@@ -207,7 +242,12 @@ namespace FoodApp.Web.Controllers
 
             ViewData["subscribed"] = false;
 
+            shoppingCartService.deleteProductFromSoppingCart(userId, cookingClassesID);
+
             return RedirectToAction("Index");
+
+          
+
 
         }
 

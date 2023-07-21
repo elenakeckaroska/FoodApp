@@ -1,7 +1,22 @@
 ﻿@model FoodApp.Models.Dtos.ShoppingCartDto
+﻿@using Microsoft.Extensions.Options
+@inject IOptions<FoodApp.Models.Models.StripeSettings> Stripe
+
 
 <div class="container">
+    <form asp-controller="ShoppingCart" asp-action="PayOrder" method="post">
+        <article>
+            <script src="https://checkout.stripe.com/checkout.js"
+                    class="stripe-button"
+                    data-key="@Stripe.Value.PublishableKey"
+                    data-locale="auto"
+                    data-description="Food Application Payment"
+                    data-amount="@(Model.TotalPrice * 100)"
+                    data-label="Pay $@Model.TotalPrice">
+            </script>
 
+        </article>
+    </form>
     <div class="container text-center">
         <h2>Your Shopping Cart</h2>
     </div>
