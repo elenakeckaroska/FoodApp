@@ -18,12 +18,22 @@ namespace FoodApp.Web.Controllers
     {
         private readonly IRecipeServive recipeService;
         private readonly IRecipeRepository recipeRepository;
+        private readonly IRepository<Ingredient> ingredientRepository;
 
-
-        public RecipeController(IRecipeServive recipeServive, IRecipeRepository recipeRepository)
+        public RecipeController(IRecipeServive recipeServive, IRecipeRepository recipeRepository, IRepository<Ingredient> ingredientRepository)
         {
             this.recipeService = recipeServive;
             this.recipeRepository = recipeRepository;
+            this.ingredientRepository = ingredientRepository;
+        }
+
+        public List<Recipe> GetAll()
+        {
+            return recipeRepository.GetAll();
+        }
+        public List<Ingredient> GetAllIngredients()
+        {
+            return ingredientRepository.GetAll().ToList();
         }
         public IActionResult Index()
         {

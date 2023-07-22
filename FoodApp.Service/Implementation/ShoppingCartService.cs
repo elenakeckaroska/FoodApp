@@ -136,7 +136,7 @@ namespace FoodApp.Service.Implementation
 
                 var totalPrice = 0.0;
 
-                sb.AppendLine("Your order is completed. The order conatins: ");
+                sb.AppendLine("HAPPY BIRTHDAY!! <3");
 
                 for (int i = 1; i <= result.Count(); i++)
                 {
@@ -145,7 +145,7 @@ namespace FoodApp.Service.Implementation
                     sb.AppendLine(i.ToString() + ". " + currentItem.SelectedClass.Price + " with quantity of: and price of: $" + currentItem.SelectedClass.Price);
                 }
 
-                sb.AppendLine("Total price for your order: " + totalPrice.ToString());
+                //sb.AppendLine("Total price for your order: " + totalPrice.ToString());
 
                 message.Content = sb.ToString();
 

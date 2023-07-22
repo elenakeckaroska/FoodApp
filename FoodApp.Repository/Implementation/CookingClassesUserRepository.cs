@@ -20,6 +20,10 @@ namespace FoodApp.Repository.Implementation
             entities = context.Set<CookingClassesUser>();
         }   
 
+        public List<CookingClassesUser> GetAll()
+        {
+            return entities.ToList();
+        }
         public void Add(CookingClassesUser item)
         {
             entities.Add(item);

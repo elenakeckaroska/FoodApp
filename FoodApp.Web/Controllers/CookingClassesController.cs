@@ -23,10 +23,11 @@ namespace FoodApp.Web.Controllers
         private readonly IRecipeServive recipeService;
         private readonly IShoppingCartService shoppingCartService;
         private readonly IOrderService orderService;
+        private readonly IRepository<CookingClassInOrder> cookingClassesInOrderRepository;
 
         public CookingClassesController(ICookingClassesService cookingClassesService, IRecipeServive recipeService,
             ICookingClassesRepository cookingClassesRepository, ICookingClassesUserRepository cookingClassesUserRepository,
-            IShoppingCartService shoppingCartService, IOrderService orderService)
+            IShoppingCartService shoppingCartService, IOrderService orderService, IRepository<CookingClassInOrder> cookingClassesInOrderRepository)
         {
             this.cookingClassesService = cookingClassesService;
             this.cookingClassesRepository = cookingClassesRepository;
@@ -34,88 +35,63 @@ namespace FoodApp.Web.Controllers
             this.cookingClassesUserRepository = cookingClassesUserRepository;
             this.shoppingCartService = shoppingCartService;
             this.orderService = orderService;
+            this.cookingClassesInOrderRepository = cookingClassesInOrderRepository;
         }
 
         // GET: CookingClasses
         public IActionResult Index()
         {
-            List<CookingClasses> cookingClasses = this.cookingClassesRepository.GetAll();
-            List<CookingClassesDto> cookingClassesDtos = new List<CookingClassesDto>();
+            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            List<CookingClassesDto> cookingClassesDtos = cookingClassesService.filterCookingClasses(userId);
 
-            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier); 
-
-            foreach (var item in cookingClasses)
-            {
-                List<string> cook = cookingClassesUserRepository.GetFavoriteRecipeUsers()
-                  .Where(f => f.CookingClassesID == item.Id)
-                  .Select(f => f.UserId).ToList();
-
-                List<Order> ordersByUser = orderService.getAllOrders()
-                    .Where(o => o.UserId == userId)
-                    .ToList();
-
-                bool paid = false;
-                foreach (var order in ordersByUser)
-                {
-                    if (order.ClassesInOrder.Select(f => f.ClassId)
-                        .Contains(item.Id))
-                    {
-                        paid = true;
-                    }
-                }
-
-                cookingClassesDtos.Add(
-                    new CookingClassesDto
-                    {
-                        Id = item.Id,
-                        Link = item.Link,
-                        DateTime = item.DateTime,
-                        Recipe = item.Recipe,
-                        RecipeId = item.RecipeId,
-                        CookingClassesInShoppingCart = item.CookingClassesInShoppingCart,
-                        CookingClassesUser = item.CookingClassesUser,
-                        isUserSubscribed = cook.Contains(userId) ? true : false,
-                        Price = item.Price,
-                        hasPaid = paid
-                    });
-            }
             return View(cookingClassesDtos);
         }
 
-        // GET: CookingClasses/Details/5
-        public IActionResult Details(Guid id)
+        public List<CookingClassesFromAdmin> GetAllForAdmin()
         {
-            if (id == null)
-            {
-                return NotFound();
-            }
+            return cookingClassesService.GetAllForAdmin();
+        }
+        // GET: CookingClasses/Details/5
+        //[HttpGet("{id}")]
 
-            var cookingClasses = cookingClassesService.GetById(id);
-            if (cookingClasses == null)
+        public CookingClassesFromAdmin Details(Guid id)
+        {
+            var cookingClasses = cookingClassesService.GetByRecipeId(id);
+            return new CookingClassesFromAdmin()
             {
-                return NotFound();
-            }
+                Id = cookingClasses.Id,
+                Link = cookingClasses.Link,
+                DateTime = cookingClasses.DateTime,
+                Price = cookingClasses.Price,
+                RecipeId  =     cookingClasses.RecipeId,
+                MaxParticipants = cookingClasses.MaxParticipants,
+                recipeTitle = cookingClasses.Recipe.Title
+            };
+        }
 
-            return View(cookingClasses);
+        public List<CookingClassesUser> GetAllCookingClassesUser()
+        {
+            return cookingClassesUserRepository.GetAll();
         }
 
         // GET: CookingClasses/Create
-        public IActionResult Create()
-        {
-            List<Recipe> recipes = recipeService.getAllRecipesWithNullCookingClass();
-
-            ViewData["RecipeId"] = new SelectList(recipes, "Id", "Title");
-            return View();
-        }
+       
 
         // POST: CookingClasses/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to, for 
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
-        [ValidateAntiForgeryToken]
-        public IActionResult Create([Bind("Id,Link,Price,DateTime,RecipeId")] CookingClasses cookingClasses)
+        public IActionResult Create([FromBody] CookingClassesFromAdmin cookingClasses)
         {
-            cookingClassesService.Create(cookingClasses);
+            CookingClasses model = new CookingClasses(){
+                Id = Guid.NewGuid(),
+                Link = cookingClasses.Link,
+                Price = cookingClasses.Price,
+                DateTime = cookingClasses.DateTime,
+                RecipeId = cookingClasses.RecipeId,
+                MaxParticipants = cookingClasses.MaxParticipants
+            };
+            cookingClassesService.Create(model);
 
             //List<Recipe> recipes = _context.Recipes
             //    .Include(r=>r.CookingClass)
@@ -125,36 +101,35 @@ namespace FoodApp.Web.Controllers
             return RedirectToAction("Index");
         }
 
-        // GET: CookingClasses/Edit/5
-        public  IActionResult Edit(Guid id)
-        {
-            if (id == null)
-            {
-                return NotFound();
-            }
+        //// GET: CookingClasses/Edit/5
+        //public  IActionResult Edit(Guid id)
+        //{
+        //    if (id == null)
+        //    {
+        //        return NotFound();
+        //    }
 
-            var cookingClasses = cookingClassesService.GetById(id);
-            if (cookingClasses == null)
-            {
-                return NotFound();
-            }
+        //    var cookingClasses = cookingClassesService.GetById(id);
+        //    if (cookingClasses == null)
+        //    {
+        //        return NotFound();
+        //    }
 
-            List<Recipe> recipes = recipeService.getAllRecipesWithNullCookingClass();
+        //    List<Recipe> recipes = recipeService.getAllRecipesWithNullCookingClass();
 
-            ViewData["RecipeId"] = new SelectList(recipes, "Id", "Title", cookingClasses.RecipeId);
-            return View(cookingClasses);
-        }
+        //    ViewData["RecipeId"] = new SelectList(recipes, "Id", "Title", cookingClasses.RecipeId);
+        //    return View(cookingClasses);
+        //}
 
         // POST: CookingClasses/Edit/5
         // To protect from overposting attacks, enable the specific properties you want to bind to, for 
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
-        [ValidateAntiForgeryToken]
-        public IActionResult Edit(Guid id, [Bind("Id,Link,Price,DateTime,RecipeId")] CookingClasses cookingClasses)
+        public bool Edit([FromBody] CookingClasses cookingClasses)
         {
-            if (id != cookingClasses.Id)
+            if (cookingClasses.Id != cookingClasses.Id)
             {
-                return NotFound();
+                return false;
             }
 
             if (ModelState.IsValid)
@@ -167,18 +142,18 @@ namespace FoodApp.Web.Controllers
                 {
                     if (!CookingClassesExists(cookingClasses.Id))
                     {
-                        return NotFound();
+                        return false;
                     }
                     else
                     {
                         throw;
                     }
                 }
-                return RedirectToAction(nameof(Index));
+                return true;
             }
             List<Recipe> recipes = recipeService.getAllRecipesWithNullCookingClass();
             ViewData["RecipeId"] = new SelectList(recipes, "Id", "Title", cookingClasses.RecipeId);
-            return View(cookingClasses);
+            return true;
         }
 
         // GET: CookingClasses/Delete/5

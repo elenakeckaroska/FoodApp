@@ -7,6 +7,7 @@ using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Claims;
 using System.Text;
 
 namespace FoodApp.Service.Implementation
@@ -17,16 +18,20 @@ namespace FoodApp.Service.Implementation
         public readonly IUserRepository userRepository;
         public readonly ICookingClassesUserRepository cookingClassesUserRepository;
         private readonly IRepository<CookingClassesInShoppingCart> cookingClassesInShoppingCartRepository;
+        private readonly IRepository<CookingClassInOrder> cookingClassesInOrderRepository;
+        private readonly IOrderService orderService;
 
 
         public CookingClassesService(ICookingClassesRepository cookingClassesRepository, IUserRepository userRepository,
             ICookingClassesUserRepository cookingClassesUserRepository,
-            IRepository<CookingClassesInShoppingCart> _cookingClassesInShoppingCartRepository)
+            IRepository<CookingClassesInShoppingCart> _cookingClassesInShoppingCartRepository, IRepository<CookingClassInOrder> cookingClassesInOrderRepository, IOrderService orderService)
         {
             this.cookingClassesRepository = cookingClassesRepository;
             this.userRepository = userRepository;
             this.cookingClassesUserRepository = cookingClassesUserRepository;
             this.cookingClassesInShoppingCartRepository = _cookingClassesInShoppingCartRepository;
+            this.cookingClassesInOrderRepository = cookingClassesInOrderRepository;
+            this.orderService = orderService;
         }
         public CookingClasses GetById(Guid Id)
         {
@@ -50,6 +55,7 @@ namespace FoodApp.Service.Implementation
                 Id = Guid.NewGuid(),
                 UserId = userId,
                 User = user,
+                Username = user.Email,
                 CookingClassesID = cookingClassId,
                 CookingClass = cookingClasses
             };
@@ -113,6 +119,85 @@ namespace FoodApp.Service.Implementation
                 return false;
             }
             return false;
+        }
+
+        public List<CookingClassesDto> filterCookingClasses(string userId)
+        {
+            List<CookingClasses> cookingClasses = this.cookingClassesRepository.GetAll();
+            List<CookingClassesDto> cookingClassesDtos = new List<CookingClassesDto>();
+
+
+            foreach (var item in cookingClasses)
+            {
+                List<string> cook = cookingClassesUserRepository.GetFavoriteRecipeUsers()
+                  .Where(f => f.CookingClassesID == item.Id)
+                  .Select(f => f.UserId).ToList();
+
+                List<Order> ordersByUser = orderService.getAllOrders()
+                    .Where(o => o.UserId == userId)
+                    .ToList();
+
+                bool paid = false;
+                foreach (var order in ordersByUser)
+                {
+                    if (order.ClassesInOrder.Select(f => f.ClassId)
+                        .Contains(item.Id))
+                    {
+                        paid = true;
+                    }
+                }
+
+                int currentSubscribedUsers = cookingClassesInOrderRepository.GetAll()
+                    .Where(c => c.ClassId == item.Id)
+                    .Count();
+
+                bool canSubscribe = false;
+
+                if (currentSubscribedUsers < item.MaxParticipants)
+                    canSubscribe = true;
+
+                cookingClassesDtos.Add(
+                    new CookingClassesDto
+                    {
+                        Id = item.Id,
+                        Link = item.Link,
+                        DateTime = item.DateTime,
+                        Recipe = item.Recipe,
+                        RecipeId = item.RecipeId,
+                        MaxParticipants = item.MaxParticipants,
+                        CookingClassesInShoppingCart = item.CookingClassesInShoppingCart,
+                        CookingClassesUser = item.CookingClassesUser,
+                        isUserSubscribed = cook.Contains(userId) ? true : false,
+                        Price = item.Price,
+                        hasPaid = paid,
+                        canSubscribeToClass = canSubscribe,
+                    });
+            }
+
+            return cookingClassesDtos;
+        }
+
+        public CookingClasses GetByRecipeId(Guid Id)
+        {
+            return cookingClassesRepository.GetAll()
+                .Where(c => c.RecipeId == Id)
+                .FirstOrDefault();
+        }
+
+        public List<CookingClassesFromAdmin> GetAllForAdmin()
+        {
+            return cookingClassesRepository.GetAll()
+                .Select(c => new CookingClassesFromAdmin()
+                {
+                    Id = c.Id,
+                    RecipeId = c.RecipeId,
+                    Link = c.Link,
+                    DateTime = c.DateTime,
+                    Price = c.Price,
+                    MaxParticipants = c.MaxParticipants,
+                    recipeTitle = c.Recipe.Title
+                }).ToList();
+
         }
     }
 }

@@ -13,5 +13,7 @@ namespace FoodApp.Repository.Interface
             void Delete(CookingClassesUser model);
 
         CookingClassesUser GetByIdAndUser(Guid cookingClassesId, string userId);
+        List<CookingClassesUser> GetAll();
+
     }
 }

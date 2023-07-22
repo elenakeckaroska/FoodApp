@@ -25,6 +25,11 @@ namespace FoodApp.Models.Dtos
 
         public bool hasPaid { get; set; }
 
+        public int MaxParticipants { get; set; }
+
+        public bool canSubscribeToClass { get; set; }
+
+
 
     }
 }

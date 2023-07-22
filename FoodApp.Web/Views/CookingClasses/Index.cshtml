@@ -13,6 +13,7 @@
     <thead>
         <tr>
             <th>
+                
                 @Html.DisplayNameFor(model => model.Link)
             </th>
             <th>
@@ -30,8 +31,16 @@
 @foreach (var item in Model) {
         <tr>
             <td>
-                @Html.DisplayFor(modelItem => item.Link)
-            </td>
+                    @if (item.hasPaid)
+                    {
+                        @Html.DisplayFor(modelItem => item.Link)
+
+                    }
+                    else
+                    {
+                        <span>Unvalaible</span>
+                    }
+                </td>
             <td>
                 @Html.DisplayFor(modelItem => item.DateTime)
             </td>
@@ -39,31 +48,33 @@
                 @Html.DisplayFor(modelItem => item.Recipe.Title)
             </td>
             <td>
-                <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
 
             </td>
             <td>
-
-                  
-
-                    @if (!item.isUserSubscribed)
-                    {
-                        <a asp-action="UserScheduleCookingClass" asp-route-cookingClassesID="@item.Id">Subscribe</a>
-
-                    }
-                    else if (item.hasPaid)
+                    @if (item.hasPaid)
                     {
                         <span>Paid</span>
                     }
+                    else if(item.canSubscribeToClass)
+                    {
+
+                        @if (!item.isUserSubscribed)
+                        {
+                            <a asp-action="UserScheduleCookingClass" asp-route-cookingClassesID="@item.Id">Subscribe</a>
+
+                        }                        
+                        else
+                        {
+                            <a asp-action="RemoveUserFromCookingClasses" asp-route-cookingClassesID="@item.Id">Remove User From Cooking Class</a>
+
+                        }
+                    }
                     else
                     {
-                        <a asp-action="RemoveUserFromCookingClasses" asp-route-cookingClassesID="@item.Id">Remove User From Cooking Class</a>
+                        <span>There is no room available</span>
 
                     }
-
-                   @* <form asp-action="AddCookingClassToCart" method="post">
+                    @* <form asp-action="AddCookingClassToCart" method="post">
                         <input type="hidden" name="classId" value="@item.Id"/>
                         <button type="submit" class="btn btn-outline-primary mr-4">Add to cart</button>
                     </form>*@

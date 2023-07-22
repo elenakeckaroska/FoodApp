@@ -48,7 +48,7 @@ namespace FoodApp.Web
             services.AddScoped(typeof(ICookingClassesUserRepository), typeof(CookingClassesUserRepository));
             services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
             services.AddScoped(typeof(IOrderRepository), typeof(OrderRepository));
-
+            
 
             services.AddScoped<EmailSettings>(es => emailSettings);
             services.AddScoped<IEmailService, EmailService>(email => new EmailService(emailSettings));
@@ -59,6 +59,8 @@ namespace FoodApp.Web
             services.AddTransient<IRecipeServive, RecipeService>();
             services.AddTransient<ICookingClassesService, CookingClassesService>();
             services.AddTransient<IShoppingCartService, ShoppingCartService>();
+            services.AddTransient<IRemoteAuthenticationService, RemoteAuthenticationService>();
+
             services.AddTransient<IOrderService, OrderService>();
 
             services.Configure<StripeSettings>(Configuration.GetSection("Stripe"));
@@ -71,7 +73,8 @@ namespace FoodApp.Web
 
             //Relations
 
-            services.AddControllersWithViews();
+            services.AddControllersWithViews().AddRazorRuntimeCompilation();
+
             services.AddRazorPages();
         }
 

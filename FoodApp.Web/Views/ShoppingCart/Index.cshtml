@@ -12,7 +12,8 @@
                     data-locale="auto"
                     data-description="Food Application Payment"
                     data-amount="@(Model.TotalPrice * 100)"
-                    data-label="Pay $@Model.TotalPrice">
+                    data-label="Pay $@Model.TotalPrice"
+                    data-email="@User.Identity?.Name">
             </script>
 
         </article>

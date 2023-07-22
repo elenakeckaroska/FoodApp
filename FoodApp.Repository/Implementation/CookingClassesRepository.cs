@@ -35,7 +35,9 @@ namespace FoodApp.Repository.Implementation
 
         public List<CookingClasses> GetAll()
         {
-            return this.entities.Include(c => c.Recipe).ToList();
+            return this.entities.
+                Include(c => c.Recipe)
+                .ToList();
         }
 
         public CookingClasses GetById(Guid id)

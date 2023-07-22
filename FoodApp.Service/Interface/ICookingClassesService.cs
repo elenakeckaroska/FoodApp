@@ -9,6 +9,9 @@ namespace FoodApp.Service.Interface
     public interface ICookingClassesService
     {
         CookingClasses GetById(Guid Id);
+
+        CookingClasses GetByRecipeId(Guid Id);
+
         void Create(CookingClasses CookingClass);
 
         void UserScheduleCookingClass(Guid cookingClassId, string userId);
@@ -16,5 +19,8 @@ namespace FoodApp.Service.Interface
 
         bool AddToShoppingCart(AddToShoppingCartDto item, string userID);
 
+        List<CookingClassesDto> filterCookingClasses(string userId);
+
+        List<CookingClassesFromAdmin> GetAllForAdmin();
     }
 }
