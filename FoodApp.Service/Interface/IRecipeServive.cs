@@ -11,6 +11,8 @@ namespace FoodApp.Service.Interface
     public interface IRecipeServive
     {
         public List<RecipeDto> getAllRecipesDto(string userId);
+        public List<RecipeDto> getAllRecipesDtoWithCategory(string userId, string category);
+
         public List<Recipe> getAllRecipesWithNullCookingClass();
 
         public bool Add(RecipeViewModel model, string userId);
@@ -23,6 +25,9 @@ namespace FoodApp.Service.Interface
         public void AddRecipeToFavorites(Guid recipeId, string userId);
 
         public void RemoveRecipeFromFavorites(Guid recipeId, string userId);
+
+        public RecipeViewModel ReadRecipeFromFile(string fileName);
+
 
         //public IActionResult AddBilletToCart(AddToShoppingCartDto model)
     }

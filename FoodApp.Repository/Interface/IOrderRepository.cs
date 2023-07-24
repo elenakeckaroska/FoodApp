@@ -8,6 +8,8 @@ namespace FoodApp.Repository.Interface
     public interface IOrderRepository
     {
         public List<Order> getAllOrders();
-        public Order getOrderDetails(BaseEntity model);
+        public Order getOrderDetails(Guid id);
+        public List<Order> getOrdersForUser(string userId);
+
     }
 }

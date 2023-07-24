@@ -3,6 +3,7 @@ using FoodApp.Repository.Interface;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 
 namespace FoodApp.Repository.Implementation
@@ -27,13 +28,25 @@ namespace FoodApp.Repository.Implementation
                 .ToListAsync().Result;
         }
 
-        public Order getOrderDetails(BaseEntity model)
+        public Order getOrderDetails(Guid id)
         {
             return entities
                .Include(z => z.User)
                .Include(z => z.ClassesInOrder)
                .Include("ClassesInOrder.SelectedClass")
-               .SingleOrDefaultAsync(z => z.Id == model.Id).Result;
+               .Include("ClassesInOrder.SelectedClass.Recipe")
+               .SingleOrDefaultAsync(z => z.Id == id).Result;
         }
+
+        public List<Order> getOrdersForUser(string userId)
+        {
+            return entities
+                .Where(z => z.UserId == userId)
+                .Include(z => z.ClassesInOrder)
+                .Include("ClassesInOrder.SelectedClass")
+                .Include("ClassesInOrder.SelectedClass.Recipe")
+                .ToListAsync().Result;
+        }
+
     }
 }

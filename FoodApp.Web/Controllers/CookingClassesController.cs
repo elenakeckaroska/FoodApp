@@ -74,8 +74,17 @@ namespace FoodApp.Web.Controllers
             return cookingClassesUserRepository.GetAll();
         }
 
+        public List<CookingClassInOrderDto> GetAllCookingClassesInOrderAdmin()
+        {
+            return cookingClassesInOrderRepository.GetAll()
+                .Select(x => new CookingClassInOrderDto()
+                {
+                    classId = x.ClassId,
+                    orderId = x.OrderId
+                }).ToList();
+        }
         // GET: CookingClasses/Create
-       
+
 
         // POST: CookingClasses/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to, for 
@@ -174,10 +183,10 @@ namespace FoodApp.Web.Controllers
         // POST: CookingClasses/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
-        public IActionResult DeleteConfirmed(Guid id)
+        public bool DeleteConfirmed(Guid id)
         {
             cookingClassesRepository.Delete(id);
-            return RedirectToAction(nameof(Index));
+            return true;
         }
 
         private bool CookingClassesExists(Guid id)

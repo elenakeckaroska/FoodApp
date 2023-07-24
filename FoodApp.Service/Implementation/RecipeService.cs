@@ -1,4 +1,5 @@
-﻿using FoodApp.Models;
+﻿using ExcelDataReader;
+using FoodApp.Models;
 using FoodApp.Models.Dtos;
 using FoodApp.Models.Models;
 using FoodApp.Models.ViewModels;
@@ -6,8 +7,12 @@ using FoodApp.Repository.Implementation;
 using FoodApp.Repository.Interface;
 using FoodApp.Service.Interface;
 using Microsoft.EntityFrameworkCore;
+using OfficeOpenXml;
 using System;
 using System.Collections.Generic;
+using System.Data;
+using System.Data.Entity.Core.Common.CommandTrees.ExpressionBuilder;
+using System.IO;
 using System.Linq;
 using System.Security.Claims;
 using System.Text;
@@ -25,8 +30,8 @@ namespace FoodApp.Service.Implementation
 
         private readonly IFavoriteRecipeUsersRepository favoriteRecipeUsersRepository;
         private readonly ICookingClassesUserRepository cookingClassesUserRepository;
-        public RecipeService(IRecipeRepository recipeRepository, 
-            IFavoriteRecipeUsersRepository favoriteRecipeUsersRepository, 
+        public RecipeService(IRecipeRepository recipeRepository,
+            IFavoriteRecipeUsersRepository favoriteRecipeUsersRepository,
             IIngredientRepository ingredientRepository,
             IUserRepository userRepository,
             ICookingClassesUserRepository cookingClassesUserRepository,
@@ -43,42 +48,42 @@ namespace FoodApp.Service.Implementation
         }
 
         public bool Add(RecipeViewModel model, string userId)
-        {            
-                // Create a new Recipe instance and save it
-                var recipe = new Recipe
-                {
-                    Id = Guid.NewGuid(),
-                    Title = model.RecipeTitle,
-                    PreparationDescription = model.PreparationDescription,
-                    Category = model.SelectedCategory,
-                    Ingridients = new List<Ingredient>(),
-                    FavoriteRecipes = new List<FavoriteRecipeUser>()
+        {
+            // Create a new Recipe instance and save it
+            var recipe = new Recipe
+            {
+                Id = Guid.NewGuid(),
+                Title = model.RecipeTitle,
+                PreparationDescription = model.PreparationDescription,
+                Category = model.SelectedCategory,
+                Ingridients = new List<Ingredient>(),
+                FavoriteRecipes = new List<FavoriteRecipeUser>()
 
-                };
+            };
 
             recipeRepository.Add(recipe);
 
             // Convert the IngredientViewModels to Ingredients and add them to the Recipe
             if (model.Ingredients != null)
+            {
+                foreach (var ingredientViewModel in model.Ingredients)
                 {
-                    foreach (var ingredientViewModel in model.Ingredients)
+                    var ingredient = new Ingredient
                     {
-                        var ingredient = new Ingredient
-                        {
-                            Id = Guid.NewGuid(),
-                            Name = ingredientViewModel.Name,
-                            Quantity = ingredientViewModel.Quantity,
-                            UnitOfMeasurement = ingredientViewModel.SelectedUnit,
-                            RecipeId = recipe.Id
-                        };
+                        Id = Guid.NewGuid(),
+                        Name = ingredientViewModel.Name,
+                        Quantity = ingredientViewModel.Quantity,
+                        UnitOfMeasurement = ingredientViewModel.SelectedUnit,
+                        RecipeId = recipe.Id
+                    };
                     //recipe.Ingridients.Add(ingredient);
 
                     ingredientRepository.Add(ingredient);
-                    }
                 }
+            }
 
 
-                recipe.OwnerOfRecipeId = userId;
+            recipe.OwnerOfRecipeId = userId;
 
             return true;
         }
@@ -88,7 +93,7 @@ namespace FoodApp.Service.Implementation
             var user = userRepository.Get(userId);
 
             Recipe recipe = recipeRepository.GetById(recipeId);
-          
+
 
             FavoriteRecipeUser item = new FavoriteRecipeUser
             {
@@ -102,7 +107,7 @@ namespace FoodApp.Service.Implementation
             favoriteRecipeUsersRepository.Add(item);
         }
 
-        
+
 
         public void Delete(Guid id)
         {
@@ -112,7 +117,7 @@ namespace FoodApp.Service.Implementation
         public RecipeViewModel EditGet(Guid id, string userId)
         {
             Recipe recipe = recipeRepository.GetById(id);
-              
+
             List<IngredientViewModel> ingredients = new List<IngredientViewModel>();
 
 
@@ -149,27 +154,27 @@ namespace FoodApp.Service.Implementation
             Recipe recipe = recipeRepository.GetById(model.RecipeId);
 
 
-                recipe.Title = model.RecipeTitle;
-                recipe.PreparationDescription = model.PreparationDescription;
-                recipe.Category = model.SelectedCategory;
+            recipe.Title = model.RecipeTitle;
+            recipe.PreparationDescription = model.PreparationDescription;
+            recipe.Category = model.SelectedCategory;
 
-                if (model.Ingredients != null)
+            if (model.Ingredients != null)
+            {
+                foreach (var ingredientViewModel in model.Ingredients)
                 {
-                    foreach (var ingredientViewModel in model.Ingredients)
-                    {
                     Ingredient ingredient = ingredientRepository.GetById(ingredientViewModel.IngredientId);
 
 
-                        ingredient.Name = ingredientViewModel.Name;
-                        ingredient.Quantity = ingredientViewModel.Quantity;
-                        ingredient.UnitOfMeasurement = ingredientViewModel.SelectedUnit;
+                    ingredient.Name = ingredientViewModel.Name;
+                    ingredient.Quantity = ingredientViewModel.Quantity;
+                    ingredient.UnitOfMeasurement = ingredientViewModel.SelectedUnit;
 
                     ingredientRepository.Update(ingredient);
-                    }
                 }
+            }
 
-                recipeRepository.Update(recipe);
-                
+            recipeRepository.Update(recipe);
+
 
 
         }
@@ -267,5 +272,83 @@ namespace FoodApp.Service.Implementation
             }
             return false;
         }
+
+        public List<RecipeDto> getAllRecipesDtoWithCategory(string userId, string category)
+        {
+            List<Recipe> recipes = recipeRepository.GetAll();
+
+            List<RecipeDto> recipeDtos = new List<RecipeDto>();
+            foreach (var r in recipes)
+            {
+                List<string> favRecipeOnUsers = favoriteRecipeUsersRepository.GetFavoriteRecipeUsers()
+                    .Where(f => f.RecipeId == r.Id)
+                    .Select(f => f.UserId).ToList();
+                recipeDtos.Add(new RecipeDto
+                {
+                    Id = r.Id,
+                    Title = r.Title,
+                    PreparationDescription = r.PreparationDescription,
+                    Ingridients = r.Ingridients,
+                    OwnerOfRecipe = r.OwnerOfRecipe,
+                    OwnerOfRecipeId = r.OwnerOfRecipeId,
+                    FavoriteRecipes = r.FavoriteRecipes,
+                    Category = r.Category,
+                    IsFavorite = favRecipeOnUsers.Contains(userId) ? true : false,
+                });
+
+            }
+
+            return recipeDtos.Where(r => r.Category == category).ToList();
+        }
+
+        public RecipeViewModel ReadRecipeFromFile(string fileName)
+        {
+            string pathToFile = $"{Directory.GetCurrentDirectory()}\\filesWriten\\{fileName}";
+
+
+            using (var stream = File.Open(pathToFile, FileMode.Open, FileAccess.Read))
+            {
+                using (var reader = ExcelReaderFactory.CreateReader(stream))
+                {
+                    // Assuming you want to read from the first worksheet
+                    var result = reader.AsDataSet(new ExcelDataSetConfiguration
+                    {
+                        ConfigureDataTable = _ => new ExcelDataTableConfiguration { UseHeaderRow = false }
+                    });
+
+                    DataTable dataTable = result.Tables[0]; // First worksheet
+                    RecipeViewModel recipeViewModel = new RecipeViewModel()
+                    {
+                        RecipeTitle = dataTable.Rows[1][0].ToString(),
+                        PreparationDescription = dataTable.Rows[2][0].ToString(),
+                        SelectedCategory = dataTable.Rows[3][0].ToString()
+
+                    };
+
+                    int numOfRows = dataTable.Rows.Count;
+
+
+                    for (int row = 6; row <= numOfRows; row=row+4)
+                    {
+                        IngredientViewModel ingredient = new IngredientViewModel()
+                        {
+                            Name = dataTable.Rows[row][0].ToString(),
+                            Quantity = double.Parse(dataTable.Rows[row + 1][0].ToString()),
+                            SelectedUnit = dataTable.Rows[row + 2][0].ToString(),
+
+                        };
+
+                        Console.WriteLine();
+                        recipeViewModel.Ingredients.Add(ingredient);    
+                    }
+
+                    return recipeViewModel;
+
+                }
+            }
+
+
+        }
     }
 }
+

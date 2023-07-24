@@ -2,6 +2,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using OfficeOpenXml;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -14,6 +15,12 @@ namespace FoodApp.Web
         public static void Main(string[] args)
         {
             CreateHostBuilder(args).Build().Run();
+        
+                // Set the LicenseContext
+                ExcelPackage.LicenseContext = LicenseContext.NonCommercial;
+
+                // Your code here
+            
         }
 
         public static IHostBuilder CreateHostBuilder(string[] args) =>

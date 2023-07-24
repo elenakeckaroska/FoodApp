@@ -195,6 +195,22 @@
         "netcoreapp3.1": {
           "targetAlias": "netcoreapp3.1",
           "dependencies": {
+            "EPPlus": {
+              "target": "Package",
+              "version": "[6.2.7, )"
+            },
+            "ExcelDataReader": {
+              "target": "Package",
+              "version": "[3.6.0, )"
+            },
+            "ExcelDataReader.DataSet": {
+              "target": "Package",
+              "version": "[3.6.0, )"
+            },
+            "GemBox.Document": {
+              "target": "Package",
+              "version": "[35.0.1423, )"
+            },
             "MailKit": {
               "target": "Package",
               "version": "[4.1.0, )"
